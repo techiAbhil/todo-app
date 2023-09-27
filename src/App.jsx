@@ -1,5 +1,5 @@
 import isPropValid from '@emotion/is-prop-valid';
-import { useCallback, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheetManager } from 'styled-components';
 import {
 	Container,
@@ -8,58 +8,61 @@ import {
 	StyledInput,
 	Title,
 } from './App.style';
-import TodoList from './components/TodoList/todo-list';
+import TodoList from './components/todo-components/todo-list';
+
 const App = () => {
 	const inputRef = useRef();
-	const [todoList, setTodoList] = useState([]);
-	const addTodoHandler = useCallback(() => {
-		const value = inputRef.current?.value;
-		if (!value) return;
-		setTodoList((todos) => [
-			...todos,
+	const [todoListItems, setTodoListItems] = useState([]);
+	useEffect(() => {
+		inputRef.current.focus();
+	}, []);
+
+	const onClickHandler = () => {
+		setTodoListItems([
+			...todoListItems,
 			{
 				id: new Date().getTime(),
-				description: value,
+				value: inputRef.current.value,
 				isCompleted: false,
-				isEditing: false,
 			},
 		]);
 		inputRef.current.value = '';
-	}, []);
-
-	const onTodoUpdated = useCallback(
-		(todoItem) => {
-			const newTodo = todoList.map((item) => {
-				if (todoItem.id === item.id) {
-					return { ...todoItem };
-				}
-				return item;
-			});
-			setTodoList(newTodo);
-		},
-		[todoList]
-	);
-
-	const onDeleteTodo = (deleteTodoId) => {
-		const updatedTodoList = todoList.filter((item) => item.id !== deleteTodoId);
-		setTodoList(updatedTodoList);
+		inputRef.current.focus();
 	};
+
+	const onTodoItemUpdated = (todoItem) => {
+		const updatedTodoItems = todoListItems.map((todo) => {
+			if (todo.id === todoItem.id) {
+				return todoItem;
+			}
+			return todo;
+		});
+		setTodoListItems([...updatedTodoItems]);
+	};
+
+	const onDeleteTodo = (id) => {
+		const updatedTodoList = todoListItems.filter((todo) => todo.id !== id);
+		setTodoListItems(updatedTodoList);
+	};
+
 	return (
 		<StyleSheetManager shouldForwardProp={isPropValid}>
 			<Container>
 				<FlexCard>
-					<Title>TODO App</Title>
+					<Title>Todo App</Title>
 				</FlexCard>
-
 				<FlexCard>
-					<StyledInput placeholder="Add Todo" ref={inputRef} />
-					<StyledButton onClick={addTodoHandler}>ADD TODO</StyledButton>
+					<StyledInput
+						type="text"
+						placeholder="Enter here to add todo"
+						ref={inputRef}
+					/>
+					<StyledButton onClick={onClickHandler}>Add Todo</StyledButton>
 				</FlexCard>
-
 				<TodoList
-					todoList={todoList}
-					onTodoUpdated={onTodoUpdated}
 					onDeleteTodo={onDeleteTodo}
+					todoListItems={todoListItems}
+					onTodoItemUpdated={onTodoItemUpdated}
 				/>
 			</Container>
 		</StyleSheetManager>
