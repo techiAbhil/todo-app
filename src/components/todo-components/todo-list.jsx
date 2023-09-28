@@ -1,9 +1,10 @@
-import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { FlexCard, Text } from '../../App.style';
+import useMyAppContext from '../../hooks/use-app-context';
 import TodoItem from './todo-item';
 
-const TodoList = ({ todoListItems, onTodoItemUpdated, onDeleteTodo }) => {
+const TodoList = () => {
+	const { todoListItems } = useMyAppContext();
 	const compltedTodoItems = useMemo(() => {
 		return todoListItems.filter((todo) => todo.isCompleted === true);
 	}, [todoListItems]);
@@ -19,12 +20,7 @@ const TodoList = ({ todoListItems, onTodoItemUpdated, onDeleteTodo }) => {
 				</FlexCard>
 			)}
 			{inCompltedTodoItems?.map((todoItem) => (
-				<TodoItem
-					key={todoItem.id}
-					todoItem={todoItem}
-					onTodoItemUpdated={onTodoItemUpdated}
-					onDeleteTodo={onDeleteTodo}
-				/>
+				<TodoItem key={todoItem.id} todoItem={todoItem} />
 			))}
 			{compltedTodoItems.length > 0 && (
 				<FlexCard>
@@ -33,25 +29,10 @@ const TodoList = ({ todoListItems, onTodoItemUpdated, onDeleteTodo }) => {
 			)}
 
 			{compltedTodoItems?.map((todoItem) => (
-				<TodoItem
-					key={todoItem.id}
-					todoItem={todoItem}
-					onTodoItemUpdated={onTodoItemUpdated}
-					onDeleteTodo={onDeleteTodo}
-				/>
+				<TodoItem key={todoItem.id} todoItem={todoItem} />
 			))}
 		</>
 	);
-};
-
-TodoList.propTypes = {
-	todoListItems: PropTypes.array.isRequired,
-	onTodoItemUpdated: PropTypes.func.isRequired,
-	onDeleteTodo: PropTypes.func.isRequired,
-};
-
-TodoList.defaultProps = {
-	todoListItems: [],
 };
 
 export default TodoList;

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import {
 	FlexCard,
 	StyledButton,
@@ -7,9 +7,10 @@ import {
 	StyledInput,
 	Text,
 } from '../../App.style';
-const TodoItem = ({ todoItem, onTodoItemUpdated, onDeleteTodo }) => {
+import AppContext from '../../context/AppContext';
+const TodoItem = ({ todoItem }) => {
 	const { value, id, isCompleted } = todoItem;
-
+	const { onDeleteTodo, onTodoItemUpdated } = useContext(AppContext);
 	const [isEditMode, setIsEditMode] = useState(false);
 	const inputRef = useRef();
 	const onCheckboxChange = () => {
@@ -89,7 +90,5 @@ const TodoItem = ({ todoItem, onTodoItemUpdated, onDeleteTodo }) => {
 
 TodoItem.propTypes = {
 	todoItem: PropTypes.object.isRequired,
-	onTodoItemUpdated: PropTypes.func.isRequired,
-	onDeleteTodo: PropTypes.func.isRequired,
 };
 export default TodoItem;

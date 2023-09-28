@@ -9,6 +9,7 @@ import {
 	Title,
 } from './App.style';
 import TodoList from './components/todo-components/todo-list';
+import AppContext from './context/AppContext';
 
 const App = () => {
 	const inputRef = useRef();
@@ -46,27 +47,45 @@ const App = () => {
 	};
 
 	return (
-		<StyleSheetManager shouldForwardProp={isPropValid}>
-			<Container>
-				<FlexCard>
-					<Title>Todo App</Title>
-				</FlexCard>
-				<FlexCard>
-					<StyledInput
-						type="text"
-						placeholder="Enter here to add todo"
-						ref={inputRef}
-					/>
-					<StyledButton onClick={onClickHandler}>Add Todo</StyledButton>
-				</FlexCard>
-				<TodoList
-					onDeleteTodo={onDeleteTodo}
-					todoListItems={todoListItems}
-					onTodoItemUpdated={onTodoItemUpdated}
-				/>
-			</Container>
-		</StyleSheetManager>
+		<AppContext.Provider
+			value={{
+				todoListItems,
+				onDeleteTodo,
+				onTodoItemUpdated,
+				message: 'this is my welcome to all of you 123',
+			}}
+		>
+			<StyleSheetManager shouldForwardProp={isPropValid}>
+				<Container>
+					<FlexCard>
+						<Title>Todo App</Title>
+					</FlexCard>
+					<FlexCard>
+						<StyledInput
+							type="text"
+							placeholder="Enter here to add todo"
+							ref={inputRef}
+						/>
+						<StyledButton onClick={onClickHandler}>Add Todo</StyledButton>
+					</FlexCard>
+					<TodoList />
+				</Container>
+				{/* <AppChildren /> */}
+			</StyleSheetManager>
+		</AppContext.Provider>
 	);
 };
+
+// const AppChildren = () => {
+// 	const context = useMyAppContext();
+// 	console.log('context from = ', context);
+// 	return (
+// 		<div>
+// 			<AppContext.Consumer>
+// 				{({ message }) => <p>{message}</p>}
+// 			</AppContext.Consumer>
+// 		</div>
+// 	);
+// };
 
 export default App;
