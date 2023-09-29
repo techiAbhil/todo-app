@@ -1,5 +1,5 @@
 import isPropValid from '@emotion/is-prop-valid';
-import { useEffect, useRef, useState } from 'react';
+import { Component, useEffect, useRef, useState } from 'react';
 import { StyleSheetManager } from 'styled-components';
 import {
 	Container,
@@ -9,8 +9,7 @@ import {
 	Title,
 } from './App.style';
 import TodoList from './components/todo-components/todo-list';
-import AppContext from './context/AppContext';
-
+import AppContext from './context/app-context';
 const App = () => {
 	const inputRef = useRef();
 	const [todoListItems, setTodoListItems] = useState([]);
@@ -52,11 +51,12 @@ const App = () => {
 				todoListItems,
 				onDeleteTodo,
 				onTodoItemUpdated,
-				message: 'this is my welcome to all of you 123',
+				name: 'Vaibhav',
 			}}
 		>
 			<StyleSheetManager shouldForwardProp={isPropValid}>
 				<Container>
+					<AppChild />
 					<FlexCard>
 						<Title>Todo App</Title>
 					</FlexCard>
@@ -70,22 +70,17 @@ const App = () => {
 					</FlexCard>
 					<TodoList />
 				</Container>
-				{/* <AppChildren /> */}
 			</StyleSheetManager>
 		</AppContext.Provider>
 	);
 };
 
-// const AppChildren = () => {
-// 	const context = useMyAppContext();
-// 	console.log('context from = ', context);
-// 	return (
-// 		<div>
-// 			<AppContext.Consumer>
-// 				{({ message }) => <p>{message}</p>}
-// 			</AppContext.Consumer>
-// 		</div>
-// 	);
-// };
+class AppChild extends Component {
+	render() {
+		return (
+			<AppContext.Consumer>{({ name }) => <h1>{name}</h1>}</AppContext.Consumer>
+		);
+	}
+}
 
 export default App;

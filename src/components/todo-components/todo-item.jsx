@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
 	FlexCard,
 	StyledButton,
@@ -7,10 +7,10 @@ import {
 	StyledInput,
 	Text,
 } from '../../App.style';
-import AppContext from '../../context/AppContext';
+import useMyAppContext from '../../hooks/app-context';
 const TodoItem = ({ todoItem }) => {
 	const { value, id, isCompleted } = todoItem;
-	const { onDeleteTodo, onTodoItemUpdated } = useContext(AppContext);
+	const { onDeleteTodo, onTodoItemUpdated } = useMyAppContext();
 	const [isEditMode, setIsEditMode] = useState(false);
 	const inputRef = useRef();
 	const onCheckboxChange = () => {

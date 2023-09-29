@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { FlexCard, Text } from '../../App.style';
-import useMyAppContext from '../../hooks/use-app-context';
+import useMyAppContext from '../../hooks/app-context';
 import TodoItem from './todo-item';
 
 const TodoList = () => {
