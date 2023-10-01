@@ -1,86 +1,25 @@
-import isPropValid from '@emotion/is-prop-valid';
-import { Component, useEffect, useRef, useState } from 'react';
-import { StyleSheetManager } from 'styled-components';
-import {
-	Container,
-	FlexCard,
-	StyledButton,
-	StyledInput,
-	Title,
-} from './App.style';
-import TodoList from './components/todo-components/todo-list';
-import AppContext from './context/app-context';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Layout from './components/layout/layout';
+import LandigPage from './pages/Landing-page/landing.page';
+import Calculator from './pages/calculator-page/calculator.page';
+import TodoPage from './pages/todo-page/todo.page';
+import UrlPage from './pages/url-page/url.page';
+
 const App = () => {
-	const inputRef = useRef();
-	const [todoListItems, setTodoListItems] = useState([]);
-	useEffect(() => {
-		inputRef.current.focus();
-	}, []);
-
-	const onClickHandler = () => {
-		setTodoListItems([
-			...todoListItems,
-			{
-				id: new Date().getTime(),
-				value: inputRef.current.value,
-				isCompleted: false,
-			},
-		]);
-		inputRef.current.value = '';
-		inputRef.current.focus();
-	};
-
-	const onTodoItemUpdated = (todoItem) => {
-		const updatedTodoItems = todoListItems.map((todo) => {
-			if (todo.id === todoItem.id) {
-				return todoItem;
-			}
-			return todo;
-		});
-		setTodoListItems([...updatedTodoItems]);
-	};
-
-	const onDeleteTodo = (id) => {
-		const updatedTodoList = todoListItems.filter((todo) => todo.id !== id);
-		setTodoListItems(updatedTodoList);
-	};
-
 	return (
-		<AppContext.Provider
-			value={{
-				todoListItems,
-				onDeleteTodo,
-				onTodoItemUpdated,
-				name: 'Vaibhav',
-			}}
-		>
-			<StyleSheetManager shouldForwardProp={isPropValid}>
-				<Container>
-					<AppChild />
-					<FlexCard>
-						<Title>Todo App</Title>
-					</FlexCard>
-					<FlexCard>
-						<StyledInput
-							type="text"
-							placeholder="Enter here to add todo"
-							ref={inputRef}
-						/>
-						<StyledButton onClick={onClickHandler}>Add Todo</StyledButton>
-					</FlexCard>
-					<TodoList />
-				</Container>
-			</StyleSheetManager>
-		</AppContext.Provider>
+		<>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" Component={Layout}>
+						<Route path="/" element={<LandigPage name="abhilash" />} />
+						<Route path="/todo" Component={TodoPage} />
+						<Route path="/calculator" Component={Calculator} />
+						<Route path="/urlpage/:id?/:name?" Component={UrlPage} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
+		</>
 	);
 };
-
-class AppChild extends Component {
-	render() {
-		return (
-			<AppContext.Consumer>{({ name }) => <h1>{name}</h1>}</AppContext.Consumer>
-		);
-	}
-}
 
 export default App;
