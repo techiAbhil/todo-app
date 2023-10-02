@@ -1,8 +1,8 @@
 import { useReducer, useState } from 'react';
 import MyInput from '../../components/my-input';
-import performOperation from './my-reducer';
+import performOperation from '../../helpers/calculator-reducer';
 
-function Calculator() {
+function Calculator(props) {
 	const [state, dispatch] = useReducer(performOperation, {
 		num1: 0,
 		num2: 0,
@@ -11,7 +11,7 @@ function Calculator() {
 	});
 
 	const [operation, setOpeartion] = useState('');
-
+	console.log(props);
 	return (
 		<div
 			style={{

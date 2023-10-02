@@ -1,5 +1,5 @@
 import isPropValid from '@emotion/is-prop-valid';
-import { Component, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheetManager } from 'styled-components';
 import {
 	Container,
@@ -10,16 +10,12 @@ import {
 } from '../../App.style';
 import TodoList from '../../components/todo-components/todo-list';
 import AppContext from '../../context/app-context';
-const TodoPage = (props) => {
+const TodoPage = () => {
 	const inputRef = useRef();
 	const [todoListItems, setTodoListItems] = useState([]);
 	useEffect(() => {
 		inputRef.current.focus();
 	}, []);
-
-	useEffect(() => {
-		console.log(props);
-	}, [props]);
 
 	const onClickHandler = () => {
 		setTodoListItems([
@@ -60,7 +56,7 @@ const TodoPage = (props) => {
 		>
 			<StyleSheetManager shouldForwardProp={isPropValid}>
 				<Container>
-					<AppChild />
+					{/* <AppChild /> */}
 					<FlexCard>
 						<Title>Todo App</Title>
 					</FlexCard>
@@ -79,12 +75,12 @@ const TodoPage = (props) => {
 	);
 };
 
-class AppChild extends Component {
-	render() {
-		return (
-			<AppContext.Consumer>{({ name }) => <h1>{name}</h1>}</AppContext.Consumer>
-		);
-	}
-}
+// class AppChild extends Component {
+// 	render() {
+// 		return (
+// 			<AppContext.Consumer>{({ name }) => <h1>{name}</h1>}</AppContext.Consumer>
+// 		);
+// 	}
+// }
 
 export default TodoPage;
